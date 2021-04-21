@@ -1,3 +1,57 @@
 {
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/cyplanning",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
 
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9050
+        },
+        {
+          "Host": "localhost",
+          "Port": 9051
+        },
+        {
+          "Host": "localhost",
+          "Port": 9052
+        }
+      ],
+      "UpstreamPathTemplate": "/cyplanning",
+      "UpstreamHttpMethod": [ "Options", "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/cyoranization",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9060
+        },
+        {
+          "Host": "localhost",
+          "Port": 9061
+        },
+        {
+          "Host": "localhost",
+          "Port": 9062
+        }
+      ],
+      "UpstreamPathTemplate": "/cyoranization",
+      "UpstreamHttpMethod": [ "Options", "Get", "Post", "Put", "Delete" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:9070" 
+  } 
+   
 }

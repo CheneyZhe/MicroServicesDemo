@@ -25,8 +25,10 @@ namespace Web.MVC
         {
             services.AddHttpClient();
             services.AddControllers();
-            services.AddSingleton<IServiceBase, ServiceBase>();
-
+            //consul 服务注册与发现
+            //services.AddSingleton<IServiceBase, ServiceBase>();
+            //ocelot 路由  隔离服务 
+            services.AddSingleton<IServiceBase, GatewayService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +53,8 @@ namespace Web.MVC
             {
                 endpoints.MapControllers();
             });
-            serviceBase.GetServices();
+           
+            //serviceBase.GetServices();
         }
     }
 }
