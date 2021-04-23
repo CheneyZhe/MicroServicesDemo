@@ -1,0 +1,71 @@
+﻿admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address:
+      protocol: TCP
+      address: 0.0.0.0
+      port_value: 9903
+static_resources:
+  listeners:
+  - name: listener_0
+    address:
+      socket_address:
+        protocol: TCP
+        address: 0.0.0.0
+        port_value: 10003
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.http_connection_manager
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/o"
+                route:
+                  host_rewrite_literal: "/cyoranization"
+                  cluster: cyoranization_service
+              - match:
+                  prefix: "/p"
+                route:
+                  host_rewrite_literal: "/cyplanning"
+                  cluster: cyplanning_service
+          http_filters:
+          - name: envoy.filters.http.router
+  clusters:
+  - name: cyplanning_service
+    connect_timeout: 0.5s
+    type: LOGICAL_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+    lb_policy:  ROUND_ROBIN
+    load_assignment:
+      cluster_name: cyplanning_service
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: cyplanningapi
+                port_value: 80 
+  - name: cyoranization_service
+    connect_timeout: 0.5s
+    type: LOGICAL_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    load_assignment:
+      cluster_name: cyoranization_service
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: cyoranizationapi
+                port_value: 80
+    

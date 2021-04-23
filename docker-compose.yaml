@@ -1,0 +1,24 @@
+﻿version: '3'
+services:
+  envoygateway:
+    build: Envoy.APIGateway/
+    ports:
+      - "9903:9903"
+      - "10003:10003"
+    volumes:
+      - ./Envoy/envoy-test.yaml:/etc/envoy/envoy.yaml
+  cyoranizationapi:
+    build: CYOranization.API/
+    ports:
+      - "8030:80"
+    environment:
+      ASPNETCORE_URLS: "http://+"
+      ASPNETCORE_ENVIRONMENT: "Development"
+
+  cyplanningapi:
+    build: CYPlanning.API/
+    ports:
+      - "8020:80"
+    environment:
+      ASPNETCORE_URLS: "http://+"
+      ASPNETCORE_ENVIRONMENT: "Development"
